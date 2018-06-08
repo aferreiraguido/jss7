@@ -43,12 +43,13 @@ import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientMan;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerMan;
 import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsClientMan;
 import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsServerMan;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerMan;
 
 /**
-*
-* @author sergey vetyutnev
-*
-*/
+ *
+ * @author <a href="mailto:serg.vetyutnev@gmail.com"> Sergey Vetyutnev </a>
+ * @modified <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
+ */
 public interface TesterHostInterface extends TesterHostMBean, NotificationEmitter {
 
     String SIMULATOR_HOME_VAR = "SIMULATOR_HOME";
@@ -86,6 +87,8 @@ public interface TesterHostInterface extends TesterHostMBean, NotificationEmitte
     TestLcsClientMan getTestLcsClientMan();
 
     TestLcsServerMan getTestLcsServerMan();
+
+    TestPsiServerMan getTestPsiServerMan();
 
     boolean isNeedQuit();
 

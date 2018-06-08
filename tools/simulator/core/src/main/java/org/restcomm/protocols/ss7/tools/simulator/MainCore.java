@@ -76,13 +76,16 @@ import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientManMB
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientStandardManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerStandardManMBean;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerManMBean;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerStandardManMBean;
 
 import com.sun.jdmk.comm.HtmlAdaptorServer;
 
 /**
  *
- * @author sergey vetyutnev
- * @author amit bhayani
+ * @author <a href="mailto:serg.vetyutnev@gmail.com"> Sergey Vetyutnev </a>
+ * @author <a href="mailto:abhayani@gmail.com"> Amit Bhayani </a>
+ * @modified <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
  */
 public class MainCore {
 
@@ -237,6 +240,7 @@ public class MainCore {
         ObjectName nameCheckImeiServerManMan = new ObjectName("SS7_Simulator_" + appName + ":type=TestCheckImeiServerMan");
         ObjectName nameMapLcsClientManMan = new ObjectName("SS7_Simulator_" + appName + ":type=TestLcsClientMan");
         ObjectName nameMapLcsServerManMan = new ObjectName("SS7_Simulator_" + appName + ":type=TestLcsServerMan");
+        ObjectName nameMapPsiServerManMan = new ObjectName("SS7_Simulator_" + appName + ":type=TestMapPsiServerMan");
 
 
         // HtmlAdaptorServer
@@ -322,6 +326,8 @@ public class MainCore {
                     TestLcsServerManMBean.class);
             mbs.registerMBean(mapLcsServerManMBean, nameMapLcsServerManMan);
 
+            TestPsiServerStandardManMBean mapPsiServerManMBean = new TestPsiServerStandardManMBean(host.getTestPsiServerMan(), TestPsiServerManMBean.class);
+            mbs.registerMBean(mapPsiServerManMBean, nameMapPsiServerManMan);
 
             System.out.println("All beans have been loaded...");
 
@@ -401,7 +407,7 @@ public class MainCore {
         mbs.unregisterMBean(nameCheckImeiServerManMan);
         mbs.unregisterMBean(nameMapLcsClientManMan);
         mbs.unregisterMBean(nameMapLcsServerManMan);
-
+        mbs.unregisterMBean(nameMapPsiServerManMan);
 
         // Registry.unbind(key);
         UnicastRemoteObject.unexportObject(reg, true);

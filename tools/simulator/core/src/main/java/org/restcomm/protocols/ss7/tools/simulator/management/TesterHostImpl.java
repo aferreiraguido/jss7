@@ -78,11 +78,13 @@ import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientConfi
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientMan;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerConfigurationData_OldFormat;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerMan;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerConfigurationData;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerMan;
 
 /**
  *
- * @author sergey vetyutnev
- *
+ * @author <a href="mailto:serg.vetyutnev@gmail.com"> Sergey Vetyutnev </a>
+ * @modified <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
  */
 public class TesterHostImpl extends NotificationBroadcasterSupport implements TesterHostInterface, Stoppable {
     private static final Logger logger = Logger.getLogger(TesterHostImpl.class);
@@ -134,6 +136,8 @@ public class TesterHostImpl extends NotificationBroadcasterSupport implements Te
     TestCheckImeiServerMan testCheckImeiServerMan;
     TestLcsClientMan testLcsClientMan;
     TestLcsServerMan testLcsServerMan;
+    TestPsiServerMan testPsiServerMan;
+
 
     // testers
 
@@ -208,6 +212,9 @@ public class TesterHostImpl extends NotificationBroadcasterSupport implements Te
 
         this.testLcsServerMan = new TestLcsServerMan(appName);
         this.testLcsServerMan.setTesterHost(this);
+
+        this.testPsiServerMan = new TestPsiServerMan(appName);
+        this.testPsiServerMan.setTesterHost(this);
 
         this.setupLog4j(appName);
 
@@ -312,6 +319,8 @@ public class TesterHostImpl extends NotificationBroadcasterSupport implements Te
     public TestLcsServerMan getTestLcsServerMan() {
         return this.testLcsServerMan;
     }
+
+    public TestPsiServerMan getTestPsiServerMan() { return this.testPsiServerMan; }
 
     private void setupLog4j(String appName) {
 
@@ -731,6 +740,16 @@ public class TesterHostImpl extends NotificationBroadcasterSupport implements Te
                     started = this.testLcsServerMan.start();
                 }
                 break;
+            case Instance_TestTask.VAL_PSI_TEST_SERVER:
+                if (curMap == null) {
+                    this.sendNotif(TesterHostImpl.SOURCE_NAME, "Error initializing MAP_PSI_TEST_SERVER: No MAP stack is defined at L3",
+                            "", Level.WARN);
+                } else {
+                    this.instance_TestTask_B = this.testPsiServerMan;
+                    this.testPsiServerMan.setMapMan(curMap);
+                    started = this.testPsiServerMan.start();
+                }
+                break;
 
             default:
                 // TODO: implement others test tasks ...
@@ -1076,6 +1095,31 @@ public class TesterHostImpl extends NotificationBroadcasterSupport implements Te
             this.testLcsClientMan.setHGMLCAddress(_TestLcsServerMan.getHGMLCAddress());
             this.testLcsClientMan.setIMEI(_TestLcsServerMan.getIMEI());
             this.testLcsClientMan.setNaESRDAddress(_TestLcsServerMan.getNaESRDAddress());
+
+            TestPsiServerConfigurationData _TestPsiServerMan = reader.read(ConfigurationData.TEST_MAP_PSI_SERVER,
+                    TestPsiServerConfigurationData.class);
+            this.testPsiServerMan.setAddressNature(new AddressNatureType(_TestPsiServerMan.getAddressNature().getIndicator()));
+            this.testPsiServerMan.setNumberingPlanType(new NumberingPlanMapType(_TestPsiServerMan.getNumberingPlanType().getIndicator()));
+            this.testPsiServerMan.setNumberingPlan(_TestPsiServerMan.getNumberingPlan());
+            this.testPsiServerMan.setImsi(_TestPsiServerMan.getIMSI());
+            this.testPsiServerMan.setLmsi(_TestPsiServerMan.getLMSI());
+            this.testPsiServerMan.setImei(_TestPsiServerMan.getIMEI());
+            this.testPsiServerMan.setMcc(_TestPsiServerMan.getMcc());
+            this.testPsiServerMan.setMnc(_TestPsiServerMan.getMnc());
+            this.testPsiServerMan.setLac(_TestPsiServerMan.getLac());
+            this.testPsiServerMan.setCi(_TestPsiServerMan.getCi());
+            this.testPsiServerMan.setAol(_TestPsiServerMan.getAol());
+            this.testPsiServerMan.setNetworkNodeNumber(_TestPsiServerMan.getNetworkNodeNumber());
+            this.testPsiServerMan.setGeographicalLatitude(_TestPsiServerMan.getGeographicalLatitude());
+            this.testPsiServerMan.setGeographicalLongitude(_TestPsiServerMan.getGeographicalLongitude());
+            this.testPsiServerMan.setGeographicalUncertainty(_TestPsiServerMan.getGeographicalUncertainty());
+            this.testPsiServerMan.setGeodeticLatitude(_TestPsiServerMan.getGeodeticLatitude());
+            this.testPsiServerMan.setGeodeticLongitude(_TestPsiServerMan.getGeodeticLongitude());
+            this.testPsiServerMan.setGeodeticUncertainty(_TestPsiServerMan.getGeodeticUncertainty());
+            this.testPsiServerMan.setGeodeticConfidence(_TestPsiServerMan.getGeodeticConfidence());
+            this.testPsiServerMan.setScreeningAndPresentationIndicators(_TestPsiServerMan.getScreeningAndPresentationIndicators());
+            this.testPsiServerMan.setSaiPresent(_TestPsiServerMan.isSaiPresent());
+            this.testPsiServerMan.setCurrentLocationRetrieved(_TestPsiServerMan.isCurrentLocationRetrieved());
 
             reader.close();
 

@@ -34,8 +34,8 @@ import javax.management.StandardEmitterMBean;
 
 /**
  *
- * @author sergey vetyutnev
- *
+ * @author <a href="mailto:serg.vetyutnev@gmail.com"> Sergey Vetyutnev </a>
+ * @modified <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
  */
 public class TesterHostStandardMBean extends StandardEmitterMBean {
 
@@ -76,8 +76,8 @@ public class TesterHostStandardMBean extends StandardEmitterMBean {
                         Void.TYPE.getName(), MBeanOperationInfo.ACTION),
                 new MBeanOperationInfo(
                         "putInstance_TestTaskValue",
-                        "Tester task: 0:NO,1:USSD_TEST_CLIENT,2:USSD_TEST_SERVER,3:SMS_TEST_CLIENT,4:SMS_TEST_SERVER,5:CAP_TEST_SCF,6:CAP_TEST_SSF,7:ATI_TEST_CLIENT,8:ATI_TEST_SERVER,9:CHECK_IMEI_TEST_CLIENT,10:CHECK_IMEI_TEST_SERVER," +
-                                "11:MAP_LCS_TEST_CLIENT,12:MAP_LCS_TEST_SERVER",
+                        "Tester task: 0:NO,1:USSD_TEST_CLIENT,2:USSD_TEST_SERVER,3:SMS_TEST_CLIENT,4:SMS_TEST_SERVER,5:CAP_TEST_SCF,6:CAP_TEST_SSF," +
+                                "7:ATI_TEST_CLIENT,8:ATI_TEST_SERVER,9:CHECK_IMEI_TEST_CLIENT,10:CHECK_IMEI_TEST_SERVER,11:MAP_LCS_TEST_CLIENT,12:MAP_LCS_TEST_SERVER,13:VAL_MAP_PSI_TEST_SERVER",
                         signString, Void.TYPE.getName(), MBeanOperationInfo.ACTION),
                 new MBeanOperationInfo("start", "Starting a tester process", signEmpty, Void.TYPE.getName(),
                         MBeanOperationInfo.ACTION),

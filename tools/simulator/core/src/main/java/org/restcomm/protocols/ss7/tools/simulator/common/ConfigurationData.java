@@ -46,11 +46,13 @@ import org.restcomm.protocols.ss7.tools.simulator.tests.sms.TestSmsClientConfigu
 import org.restcomm.protocols.ss7.tools.simulator.tests.sms.TestSmsServerConfigurationData;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientConfigurationData;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerConfigurationData;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerConfigurationData;
+
 
 /**
  *
- * @author sergey vetyutnev
- *
+ * @author <a href="mailto:serg.vetyutnev@gmail.com"> Sergey Vetyutnev </a>
+ * @modified <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
  */
 public class ConfigurationData {
 
@@ -76,6 +78,7 @@ public class ConfigurationData {
     public static final String TEST_CHECK_IMEI_SERVER = "testCheckImeiServer";
     public static final String TEST_MAP_LCS_CLIENT = "testLcsClient";
     public static final String TEST_MAP_LCS_SERVER = "testLcsServer";
+    public static final String TEST_MAP_PSI_SERVER = "testMapPsiServer";
 
     private Instance_L1 instance_L1 = new Instance_L1(Instance_L1.VAL_NO);
     private Instance_L2 instance_L2 = new Instance_L2(Instance_L2.VAL_NO);
@@ -100,7 +103,7 @@ public class ConfigurationData {
     private TestCheckImeiServerConfigurationData testCheckImeiServerConfigurationData = new TestCheckImeiServerConfigurationData();
     private TestLcsClientConfigurationData testLcsClientConfigurationData = new TestLcsClientConfigurationData();
     private TestLcsServerConfigurationData testLcsServerConfigurationData = new TestLcsServerConfigurationData();
-
+    private TestPsiServerConfigurationData testPsiServerConfigurationData = new TestPsiServerConfigurationData();
 
 
     public Instance_L1 getInstance_L1() {
@@ -273,6 +276,13 @@ public class ConfigurationData {
         this.testLcsServerConfigurationData = testLcsServerConfigurationData;
     }
 
+    public TestPsiServerConfigurationData getTestPsiServerConfigurationData() {
+        return testPsiServerConfigurationData;
+    }
+
+    public void setTestPsiServerConfigurationData(TestPsiServerConfigurationData testPsiServerConfigurationData) {
+        this.testPsiServerConfigurationData = testPsiServerConfigurationData;
+    }
 
     /**
      * XML Serialization/Deserialization
@@ -355,6 +365,10 @@ public class ConfigurationData {
             if (mapLcsServer != null)
                 data.setTestLcsServerConfigurationData(mapLcsServer);
 
+            TestPsiServerConfigurationData mapPsiServer = xml.get(TEST_MAP_PSI_SERVER, TestPsiServerConfigurationData.class);
+            if (mapPsiServer != null)
+                data.setTestPsiServerConfigurationData(mapPsiServer);
+
             // while (xml.hasNext()) {
             // Object o = xml.getNext();
             // }
@@ -385,6 +399,8 @@ public class ConfigurationData {
             xml.add(data.getTestCheckImeiServerConfigurationData(), TEST_CHECK_IMEI_SERVER, TestCheckImeiServerConfigurationData.class);
             xml.add(data.getTestLcsClientConfigurationData(), TEST_MAP_LCS_CLIENT, TestLcsClientConfigurationData.class);
             xml.add(data.getTestLcsServerConfigurationData(), TEST_MAP_LCS_SERVER, TestLcsServerConfigurationData.class);
+            xml.add(data.getTestPsiServerConfigurationData(), TEST_MAP_PSI_SERVER, TestPsiServerConfigurationData.class);
+
         }
     };
 

@@ -57,12 +57,14 @@ import org.restcomm.protocols.ss7.tools.simulator.tests.cap.TestCapScfManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.cap.TestCapSsfManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.checkimei.TestCheckImeiClientManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.checkimei.TestCheckImeiServerManMBean;
-import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsClientManMBean;
-import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsServerManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.sms.TestSmsClientManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.sms.TestSmsServerManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdClientManMBean;
 import org.restcomm.protocols.ss7.tools.simulator.tests.ussd.TestUssdServerManMBean;
+import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsClientManMBean;
+import org.restcomm.protocols.ss7.tools.simulator.tests.lcs.TestLcsServerManMBean;
+import org.restcomm.protocols.ss7.tools.simulator.tests.psi.TestPsiServerManMBean;
+
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ati.TestAtiClientForm;
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ati.TestAtiClientParamForm;
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ati.TestAtiServerForm;
@@ -87,6 +89,8 @@ import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ussd.TestUssdClientFo
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ussd.TestUssdClientParamForm;
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ussd.TestUssdServerForm;
 import org.restcomm.protocols.ss7.tools.simulatorgui.tests.ussd.TestUssdServerParamForm;
+import org.restcomm.protocols.ss7.tools.simulatorgui.tests.psi.TestPsiServerForm;
+import org.restcomm.protocols.ss7.tools.simulatorgui.tests.psi.TestPsiServerParamForm;
 
 /**
  *
@@ -118,6 +122,7 @@ public class SimulatorGuiForm extends JFrame implements NotificationListener {
     private TestCheckImeiServerManMBean checkImeiServer;
     private TestLcsClientManMBean lcsClient;
     private TestLcsServerManMBean lcsServer;
+    private TestPsiServerManMBean psiServer;
 
     private TestingForm testingForm;
 
@@ -369,6 +374,12 @@ public class SimulatorGuiForm extends JFrame implements NotificationListener {
                         frame.setVisible(true);
                     }
                     break;
+                    case Instance_TestTask.VAL_PSI_TEST_SERVER: {
+                        TestPsiServerParamForm frame = new TestPsiServerParamForm(getJFrame());
+                        frame.setData(psiServer);
+                        frame.setVisible(true);
+                    }
+                    break;
 
                 // TODO: other tests form options editing
                 }
@@ -467,6 +478,12 @@ public class SimulatorGuiForm extends JFrame implements NotificationListener {
                 dlg = testLcsClientForm;
             }
             break;
+            case Instance_TestTask.VAL_PSI_TEST_SERVER: {
+                TestPsiServerForm testPsiServerForm = new TestPsiServerForm(getJFrame());
+                testPsiServerForm.setData(psiServer);
+                dlg = testPsiServerForm;
+            }
+            break;
 
 
         // TODO: other tests form options editing
@@ -511,7 +528,7 @@ public class SimulatorGuiForm extends JFrame implements NotificationListener {
             TestSmsServerManMBean smsServer, TestCapScfManMBean capScf, TestCapSsfManMBean capSsf,
             TestAtiClientManMBean atiClient, TestAtiServerManMBean atiServer, TestCheckImeiClientManMBean checkImeiClient,
             TestCheckImeiServerManMBean checkImeiServer, TestLcsClientManMBean mapLcsClient,
-            TestLcsServerManMBean mapLcsServer) {
+            TestLcsServerManMBean mapLcsServer, TestPsiServerManMBean psiServer) {
         setTitle(getTitle() + appName);
 
         this.hostImpl = hostImpl;
@@ -534,6 +551,7 @@ public class SimulatorGuiForm extends JFrame implements NotificationListener {
         this.isRemote = isRemote;
         this.lcsClient = mapLcsClient;
         this.lcsServer = mapLcsServer;
+        this.psiServer = psiServer;
 
         this.btTermRemote.setEnabled(isRemote);
 
