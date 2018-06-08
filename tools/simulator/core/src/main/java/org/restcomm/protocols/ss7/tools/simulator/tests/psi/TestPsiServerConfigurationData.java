@@ -163,7 +163,7 @@ public class TestPsiServerConfigurationData {
             NumberingPlan.ISDN, vlrAddress);
     private int aol = 1;
     private boolean saiPresent = false;
-    private TypeOfShape geographicalTypeOfShape = TypeOfShape.EllipsoidPoint;
+    private TypeOfShape geographicalTypeOfShape = TypeOfShape.EllipsoidPointWithUncertaintyCircle;
     private Double geographicalLatitude = -23.291032;
     private Double geographicalLongitude = 109.977810;
     private Double geographicalUncertainty = 50.0;
