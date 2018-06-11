@@ -79,9 +79,9 @@ public class Instance_TestTask extends EnumeratedBase {
         stringMap.put("ATI_TEST_SERVER", VAL_ATI_TEST_SERVER);
         stringMap.put("CHECK_IMEI_TEST_CLIENT", VAL_CHECK_IMEI_TEST_CLIENT);
         stringMap.put("CHECK_IMEI_TEST_SERVER", VAL_CHECK_IMEI_TEST_SERVER);
-        stringMap.put("MAP_LCS_TEST_CLIENT",VAL_MAP_LCS_TEST_CLIENT);
-        stringMap.put("MAP_LCS_TEST_SERVER",VAL_MAP_LCS_TEST_SERVER);
-        stringMap.put("MAP_PSI_TEST_SERVER",VAL_PSI_TEST_SERVER);
+        stringMap.put("MAP_LCS_TEST_CLIENT", VAL_MAP_LCS_TEST_CLIENT);
+        stringMap.put("MAP_LCS_TEST_SERVER", VAL_MAP_LCS_TEST_SERVER);
+        stringMap.put("MAP_PSI_TEST_SERVER", VAL_PSI_TEST_SERVER);
     }
 
     public Instance_TestTask() {

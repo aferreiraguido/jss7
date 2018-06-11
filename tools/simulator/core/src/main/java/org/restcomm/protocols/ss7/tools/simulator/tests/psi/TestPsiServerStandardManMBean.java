@@ -34,7 +34,7 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
 /**
- * @author <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>*
+ * @author <a href="mailto:fernando.mendioroz@gmail.com"> Fernando Mendioroz </a>
  */
 public class TestPsiServerStandardManMBean extends StandardMBean {
 

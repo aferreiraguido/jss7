@@ -302,7 +302,7 @@ public class TestPsiServerParamForm extends JDialog {
         this.tfGeographicLongitude.setText(String.valueOf(this.testPsiServerManMBean.getGeographicalLongitude()));
         this.tfGeographicalUncertainty.setText(String.valueOf(this.testPsiServerManMBean.getGeographicalUncertainty()));
         this.tfGeodeticLatitude.setText(String.valueOf(this.testPsiServerManMBean.getGeodeticLatitude()));
-        this.tfGeodeticLongitude.setText(String.valueOf(this.testPsiServerManMBean.getGeodeticLatitude()));
+        this.tfGeodeticLongitude.setText(String.valueOf(this.testPsiServerManMBean.getGeodeticLongitude()));
         this.tfGeodeticUncetainty.setText(String.valueOf(this.testPsiServerManMBean.getGeodeticUncertainty()));
         this.tfGeodeticConfidence.setText(String.valueOf(this.testPsiServerManMBean.getGeodeticConfidence()));
         this.tfcreeningAndPresentationIndicators.setText(String.valueOf(this.testPsiServerManMBean.getScreeningAndPresentationIndicators()));
@@ -332,7 +332,7 @@ public class TestPsiServerParamForm extends JDialog {
         this.testPsiServerManMBean.setGeographicalLongitude(Double.valueOf(this.tfGeographicLongitude.getText()));
         this.testPsiServerManMBean.setGeographicalUncertainty(Double.valueOf(this.tfGeographicalUncertainty.getText()));
         this.testPsiServerManMBean.setGeodeticLatitude(Double.valueOf(this.tfGeodeticLatitude.getText()));
-        this.testPsiServerManMBean.setGeodeticLongitude(Double.valueOf(this.tfGeographicLongitude.getText()));
+        this.testPsiServerManMBean.setGeodeticLongitude(Double.valueOf(this.tfGeodeticLongitude.getText()));
         this.testPsiServerManMBean.setGeodeticUncertainty(Double.valueOf(this.tfGeodeticUncetainty.getText()));
         this.testPsiServerManMBean.setGeodeticConfidence(Integer.valueOf(this.tfGeodeticConfidence.getText()));
 

@@ -71,7 +71,32 @@ import org.restcomm.protocols.ss7.map.api.service.mobility.locationManagement.Pu
 import org.restcomm.protocols.ss7.map.api.service.mobility.oam.ActivateTraceModeRequest_Mobility;
 import org.restcomm.protocols.ss7.map.api.service.mobility.oam.ActivateTraceModeResponse_Mobility;
 
-import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.*;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.ProvideSubscriberInfoRequest;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.ProvideSubscriberInfoResponse;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.AnyTimeInterrogationRequest;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.AnyTimeInterrogationResponse;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.AnyTimeSubscriptionInterrogationRequest;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.AnyTimeSubscriptionInterrogationResponse;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.SubscriberInfo;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.LocationInformation;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.LocationInformationGPRS;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.LocationInformationEPS;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.LocationNumberMap;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.SubscriberState;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.SubscriberStateChoice;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.MNPInfoRes;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.GeographicalInformation;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.GeodeticInformation;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.TypeOfShape;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.NumberPortabilityStatus;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.RouteingNumber;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.NotReachableReason;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.MSClassmark2;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.PSSubscriberState;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.UserCSGInformation;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.TAId;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.EUtranCgi;
+import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberInformation.GPRSMSClass;
 
 import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberManagement.LSAIdentity;
 import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberManagement.InsertSubscriberDataRequest;
@@ -79,7 +104,27 @@ import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberManagement.
 import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberManagement.DeleteSubscriberDataRequest;
 import org.restcomm.protocols.ss7.map.api.service.mobility.subscriberManagement.DeleteSubscriberDataResponse;
 
-import org.restcomm.protocols.ss7.map.api.service.sms.*;
+import org.restcomm.protocols.ss7.map.api.service.sms.SendRoutingInfoForSMRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.SendRoutingInfoForSMResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.MAPDialogSms;
+import org.restcomm.protocols.ss7.map.api.service.sms.MAPServiceSms;
+import org.restcomm.protocols.ss7.map.api.service.sms.MAPServiceSmsListener;
+import org.restcomm.protocols.ss7.map.api.service.sms.LocationInfoWithLMSI;
+import org.restcomm.protocols.ss7.map.api.service.sms.ForwardShortMessageRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.ForwardShortMessageResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.AlertServiceCentreRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.AlertServiceCentreResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.ReportSMDeliveryStatusRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.ReportSMDeliveryStatusResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.MoForwardShortMessageRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.MoForwardShortMessageResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.MtForwardShortMessageRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.MtForwardShortMessageResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.InformServiceCentreRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.ReadyForSMRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.ReadyForSMResponse;
+import org.restcomm.protocols.ss7.map.api.service.sms.NoteSubscriberPresentRequest;
+import org.restcomm.protocols.ss7.map.api.service.sms.IpSmGwGuidance;
 
 import org.restcomm.protocols.ss7.map.primitives.DiameterIdentityImpl;
 import org.restcomm.protocols.ss7.map.primitives.IMEIImpl;
@@ -209,41 +254,49 @@ public class TestPsiServerMan extends TesterBase implements TestPsiServerManMBea
 
     public void onSendRoutingInfoForSMRequest(SendRoutingInfoForSMRequest sendRoutingInforForSMRequest) {
 
+        MAPErrorMessage mapErrorMessage = null;
+        logger.debug("\nonSendRoutingInfoForSMRequest");
+        if (!isStarted)
+            return;
+
+        this.countMapSriForSmReq++;
+
+        MAPProvider mapProvider = this.mapMan.getMAPStack().getMAPProvider();
+        MAPDialogSms curDialog = sendRoutingInforForSMRequest.getMAPDialog();
+        long invokeId = sendRoutingInforForSMRequest.getInvokeId();
+
+        if (!this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().isOneNotificationFor100Dialogs()) {
+            String srIforSMReqData = this.createSRIforSMData(sendRoutingInforForSMRequest);
+            this.testerHost.sendNotif(SOURCE_NAME, "Rcvd: sriForSMReq", srIforSMReqData, Level.DEBUG);
+        }
+
+        IMSI imsi = new IMSIImpl("124356871012345");
+        /*IMSI imsi = mapProvider.getMAPParameterFactory().createIMSI(
+        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getSriResponseImsi());
+
+        ISDNAddressString networkNodeNumber = mapProvider.getMAPParameterFactory().createISDNAddressString(
+        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getAddressNature(),
+        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getNumberingPlan(),
+        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getSriResponseVlr());*/
+
+        String nnnAddress = "5982123007";
+        ISDNAddressString networkNodeNumber = new ISDNAddressStringImpl(AddressNature.international_number,
+                NumberingPlan.ISDN, nnnAddress);
+
+        String lmsIdStr = "09876543";
+        byte[] lmsid = lmsIdStr.getBytes();
+        LMSI lmsiBad = new LMSIImpl(lmsid);
+        LMSI lmsi = mapProvider.getMAPParameterFactory().createLMSI(new byte[] { 11, 12, 13, 14 });
+        MAPExtensionContainer mapExtensionContainer = null;
+        AdditionalNumber additionalNumber = null;
+        boolean mwdSet = false;
+        IpSmGwGuidance ipSmGwGuidance = null;
+        LocationInfoWithLMSI locationInfoWithLMSI  = mapProvider.getMAPParameterFactory().createLocationInfoWithLMSI(networkNodeNumber, lmsi, mapExtensionContainer, false, additionalNumber);
+        logger.info("LocationInfoWithLMSI for onSendRoutingInfoForSMRequest: NNN="
+                +locationInfoWithLMSI.getNetworkNodeNumber().getAddress()+ ", LMSI="+lmsi.getData().toString());
+
+
         try {
-
-            MAPErrorMessage mapErrorMessage = null;
-            logger.debug("\nonSendRoutingInfoForSMRequest");
-            if (!isStarted)
-                return;
-
-            this.countMapSriForSmReq++;
-
-            MAPProvider mapProvider = this.mapMan.getMAPStack().getMAPProvider();
-            MAPDialogSms curDialog = sendRoutingInforForSMRequest.getMAPDialog();
-            long invokeId = sendRoutingInforForSMRequest.getInvokeId();
-
-            if (!this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().isOneNotificationFor100Dialogs()) {
-                String srIforSMReqData = this.createSRIforSMData(sendRoutingInforForSMRequest);
-                this.testerHost.sendNotif(SOURCE_NAME, "Rcvd: sriForSMReq", srIforSMReqData, Level.DEBUG);
-            }
-
-            IMSI imsi = new IMSIImpl("124356871012345");
-
-            String nnnAddress = "5982123007";
-            ISDNAddressString networkNodeNumber = new ISDNAddressStringImpl(AddressNature.international_number,
-                    NumberingPlan.ISDN, nnnAddress);
-
-            String lmsIdStr = "09876543";
-            byte[] lmsid = lmsIdStr.getBytes();
-            LMSI lmsiBad = new LMSIImpl(lmsid);
-            LMSI lmsi = mapProvider.getMAPParameterFactory().createLMSI(new byte[] { 11, 12, 13, 14 });
-            MAPExtensionContainer mapExtensionContainer = null;
-            AdditionalNumber additionalNumber = null;
-            boolean mwdSet = false;
-            IpSmGwGuidance ipSmGwGuidance = null;
-            LocationInfoWithLMSI locationInfoWithLMSI  = mapProvider.getMAPParameterFactory().createLocationInfoWithLMSI(networkNodeNumber, lmsi, mapExtensionContainer, false, additionalNumber);
-            logger.info("LocationInfoWithLMSI for onSendRoutingInfoForSMRequest: NNN="
-                    +locationInfoWithLMSI.getNetworkNodeNumber().getAddress()+ ", LMSI="+lmsi.getData().toString());
 
             curDialog.addSendRoutingInfoForSMResponse(invokeId, imsi, locationInfoWithLMSI, mapExtensionContainer, mwdSet, ipSmGwGuidance);
             curDialog.close(false);
@@ -430,6 +483,7 @@ public class TestPsiServerMan extends TesterBase implements TestPsiServerManMBea
     }
 
     private String createPSIRespData(long dialogId, SubscriberInfo subscriberInfo, MAPExtensionContainer mapExtensionContainer) {
+
         StringBuilder sb = new StringBuilder();
         sb.append("dialogId=");
         sb.append(dialogId);
@@ -489,6 +543,36 @@ public class TestPsiServerMan extends TesterBase implements TestPsiServerManMBea
         sb.append(subscriberInfo.getMNPInfoRes().getMSISDN().getAddress());
         sb.append(",\nMNP info result Routeing Number=");
         sb.append(subscriberInfo.getMNPInfoRes().getRouteingNumber().getRouteingNumber());
+        /*sb.append(",\nE-UTRAN CGI=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getEUtranCellGlobalIdentity());
+        sb.append(",\nEPS GeographicalLatitude=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeographicalInformation().getLatitude());
+        sb.append(",\nEPS Geographical Longitude=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeographicalInformation().getLongitude());
+        sb.append(",\nEPS GeographicalUncertainty=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeographicalInformation().getUncertainty());
+        sb.append(",\nEPS Geographical Type of Shape Code=");
+        sb.append(subscriberInfo.getLocationInformation().getGeographicalInformation().getTypeOfShape().getCode());
+        sb.append(",\nEPS Current Location Retrieved=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getCurrentLocationRetrieved());
+        sb.append(",\nEPS Geodetic Latitude=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getLatitude());
+        sb.append(",\nEPS Geodetic Longitude=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getLongitude());
+        sb.append(",\nEPS Geodetic Uncertainty=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getUncertainty());
+        sb.append(",\nEPS Geodetic Confidence=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getConfidence());
+        sb.append(",\nEPS Geodetic Type of Shape Code=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getTypeOfShape().getCode());
+        sb.append(",\nEPS Geodetic Screening and Presentation Indicators=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getGeodeticInformation().getScreeningAndPresentationIndicators());
+        sb.append(",\nEPS AOL=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getAgeOfLocationInformation());
+        sb.append(",\nEPS Current Location Retrieved=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getCurrentLocationRetrieved());
+        sb.append(",\nEPS Traking Identity=");
+        sb.append(subscriberInfo.getLocationInformation().getLocationInformationEPS().getTrackingAreaIdentity());*/
 
         return sb.toString();
     }
