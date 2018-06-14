@@ -271,21 +271,11 @@ public class TestPsiServerMan extends TesterBase implements TestPsiServerManMBea
         }
 
         IMSI imsi = new IMSIImpl("124356871012345");
-        /*IMSI imsi = mapProvider.getMAPParameterFactory().createIMSI(
-        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getSriResponseImsi());
-
-        ISDNAddressString networkNodeNumber = mapProvider.getMAPParameterFactory().createISDNAddressString(
-        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getAddressNature(),
-        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getNumberingPlan(),
-        this.testerHost.getConfigurationData().getTestSmsClientConfigurationData().getSriResponseVlr());*/
 
         String nnnAddress = "5982123007";
         ISDNAddressString networkNodeNumber = new ISDNAddressStringImpl(AddressNature.international_number,
                 NumberingPlan.ISDN, nnnAddress);
 
-        String lmsIdStr = "09876543";
-        byte[] lmsid = lmsIdStr.getBytes();
-        LMSI lmsiBad = new LMSIImpl(lmsid);
         LMSI lmsi = mapProvider.getMAPParameterFactory().createLMSI(new byte[] { 11, 12, 13, 14 });
         MAPExtensionContainer mapExtensionContainer = null;
         AdditionalNumber additionalNumber = null;
@@ -405,7 +395,7 @@ public class TestPsiServerMan extends TesterBase implements TestPsiServerManMBea
         EUtranCgi eUtranCgi = null;
         TAId taId = null;
         MAPExtensionContainer mapExtensionContainer = null;
-        byte[] mmeNom = new BigInteger("10102233445566778899", 16).toByteArray();
+        byte[] mmeNom = { 10, 32, 71, 4, 0, 18, 7, 59, 24, 77};
         DiameterIdentity mmeName = new DiameterIdentityImpl(mmeNom);
         LSAIdentity lsaIdentity = null;
         LocationNumberMap locationNumberMap = null;

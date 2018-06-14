@@ -276,17 +276,17 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
             SupportedLCSCapabilitySets additionalLCSCapabilitySets = new SupportedLCSCapabilitySetsImpl(lcsCapabilitySetRelease98_99, lcsCapabilitySetRelease4,
                     lcsCapabilitySetRelease5, lcsCapabilitySetRelease6, lcsCapabilitySetRelease7);
             MAPExtensionContainer mapExtensionContainer = null;
-            byte[] mmeNom = new BigInteger("00112233445566778899", 16).toByteArray();
+            byte[] mmeNom = { 10, 32, 71, 4, 0, 18, 7, 59, 24, 77};
             DiameterIdentity mmeName = new DiameterIdentityImpl(mmeNom);
-            byte[] aaaSN = new BigInteger("0011223344556677889900", 16).toByteArray();
+            byte[] aaaSN = { 18, 32, 71, 4, 0, 18, 7, 59, 24, 77, 51};
             DiameterIdentity aaaServerName = new DiameterIdentityImpl(aaaSN);
-            byte[] visitedGmlcAddress = new BigInteger("112233445500", 16).toByteArray();
+            byte[] visitedGmlcAddress = { 21, 48, 16, 9, 5, 18};
             GSNAddress vGmlcAddress = new GSNAddressImpl(visitedGmlcAddress);
-            byte[] homeGmlcAddress = new BigInteger("11223344556677", 16).toByteArray();
+            byte[] homeGmlcAddress = { 45, 0, 24, 3, 91, 12};
             GSNAddress hGmlcAddress = new GSNAddressImpl(homeGmlcAddress);
-            byte[] pivacyProfileRegisterAddress = new BigInteger("112233445566", 16).toByteArray();
+            byte[] pivacyProfileRegisterAddress = { 2, 78, 16, 24, 4, 10};
             GSNAddress pprAddress = new GSNAddressImpl(pivacyProfileRegisterAddress);
-            byte[] addVGmlcAddress = new BigInteger("5522334455", 16).toByteArray();
+            byte[] addVGmlcAddress = { 26, 19, 33, 54, 72};
             GSNAddress additionalVGmlcAddress = new GSNAddressImpl(addVGmlcAddress);
 
             LCSLocationInfo lcsLocationInfo = mapFactory.createLCSLocationInfo(mscNumber, lmsi, mapExtensionContainer, gprsNodeIndicator,
@@ -390,7 +390,7 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
             String clientName = "219023";
             LCSClientName lcsClientName = new LCSClientNameImpl(cbsDataCodingScheme, ussdString, lcsFormatIndicator);
             AddressString lcsClientDialedByMS = new AddressStringImpl(AddressNature.international_number, NumberingPlan.ISDN, clientName);
-            byte[] apn = new BigInteger("6763a20b0890", 16).toByteArray();
+            byte[] apn = {1, 1, 2, 7, 10, 1, 1};
             APN lcsAPN = new APNImpl(apn);
             lcsClientID = new LCSClientIDImpl(LCSClientType.valueAddedServices, lcsClientExternalID, lcsClientInternalID, lcsClientName, lcsClientDialedByMS, lcsAPN, null);
         } else {
@@ -489,9 +489,9 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
         byte[] velEstimate = velStr.getBytes();
         VelocityEstimate velocityEstimate = new VelocityEstimateImpl(velEstimate);
         boolean moLrShortCircuitIndicator = true;
-        byte[] gGanss = new BigInteger("666601019999", 16).toByteArray();
+        byte[] gGanss = {66, 66, 01, 02, 99, 79};
         GeranGANSSpositioningData geranGANSSpositioningData = new GeranGANSSpositioningDataImpl(gGanss);
-        byte[] uGanss = new BigInteger("777701019898", 16).toByteArray();
+        byte[] uGanss = {77, 17, 01, 01, 98, 18};
         UtranGANSSpositioningData utranGANSSpositioningData = new UtranGANSSpositioningDataImpl(uGanss);
         ServingNodeAddress targetServingNodeForHandover = mapFactory.createServingNodeAddressMscNumber(mscNumber);
 
@@ -674,7 +674,7 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
             LCSFormatIndicator lcsFormatIndicator = LCSFormatIndicator.url;
             LCSClientName lcsClientName = new LCSClientNameImpl(cbsDataCodingScheme, ussdString, lcsFormatIndicator);
             AddressString lcsClientDialedByMS = new AddressStringImpl(AddressNature.international_number, NumberingPlan.ISDN, clientName);
-            byte[] apn = new BigInteger("8877665544", 16).toByteArray();
+            byte[] apn = {1, 1, 2, 7, 10, 1, 1};
             APN lcsAPN = new APNImpl(apn);
             LCSRequestorID lcsRequestorID = null;
             LCSClientID lcsClientID = mapParameterFactory.createLCSClientID(configData.getLcsClientType(), lcsClientExternalID, lcsClientInternalID,
@@ -758,9 +758,9 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
                     lcsCapabilitySetRelease5, lcsCapabilitySetRelease6, lcsCapabilitySetRelease7);
             SupportedLCSCapabilitySets additionalLCSCapabilitySets = new SupportedLCSCapabilitySetsImpl(lcsCapabilitySetRelease98_99, lcsCapabilitySetRelease4,
                     lcsCapabilitySetRelease5, lcsCapabilitySetRelease6, lcsCapabilitySetRelease7);
-            byte[] mme = new BigInteger("8720c00a30a1743401000a", 16).toByteArray();
+            byte[] mme = {87, 20, 20, 10, 30, 01, 74, 34, 01, 00, 10};
             DiameterIdentity mmeName = new DiameterIdentityImpl(mme);
-            byte[] aaa = new BigInteger("8720c00a30a1743401101112", 16).toByteArray();
+            byte[] aaa = {87, 20, 12, 10, 30, 17, 74, 34, 1, 10, 11, 12};
             DiameterIdentity aaaServerName = new DiameterIdentityImpl(aaa);
 
             LCSLocationInfo lcsLocationInfo = mapParameterFactory.createLCSLocationInfo(networkNodeNumber, lmsi, extensionContainer, gprsNodeIndicator,
@@ -870,8 +870,13 @@ public class TestLcsServerMan extends TesterBase implements TestLcsServerManMBea
         sb.append("\", accuracyFulfilmentIndicator=\"");
         sb.append(accuracyFulfilmentIndicator);
         sb.append("\", reportingPLMNList=\"");
-        for (int i = 0; i < reportingPLMNList.getPlmnList().size(); i++) {
-            sb.append(reportingPLMNList.getPlmnList().get(i)).append(", ");
+        if (reportingPLMNList != null) {
+            for (int i = 0; i < reportingPLMNList.getPlmnList().size(); i++) {
+                if (i < reportingPLMNList.getPlmnList().size())
+                    sb.append(reportingPLMNList.getPlmnList().get(i)).append(", ");
+                else
+                    sb.append(reportingPLMNList.getPlmnList().get(i));
+            }
         }
 
         return sb.toString();
